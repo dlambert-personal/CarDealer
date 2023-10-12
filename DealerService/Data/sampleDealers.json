@@ -1,0 +1,14 @@
+[
+  {
+    "Id": 1,
+    "Name": "A",
+    "Description": "desc",
+    "Website": "https://a.com"
+  },
+  {
+    "Id": 2,
+    "Name": "B",
+    "Description": "desc2",
+    "Website": "https://b.com"
+  }
+]
