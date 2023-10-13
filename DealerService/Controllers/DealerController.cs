@@ -41,25 +41,30 @@ namespace DealerService.Controllers
             return dealer == null ? NotFound() : Ok(dealer);
         }
 
-        ////GET: DealerController/Create
-        //public Dealer Create()
-        //{
-        //    return new Dealer() { Description = "new dealer" };
-        //}
 
-        //POST: new dealer
+        //POST: create new dealer
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Dealer))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult CreateDealer(Dealer dealer)
         {
             if (dealer.Id > 0) // validation failed
             {
                 return BadRequest("Do not supply ID for new entity.");
             }
+            var dvalidator = new DealerValidator();
+            var result = dvalidator.Validate(dealer);
+            if (result.IsValid)
+            {
+                _sampleData.Add(dealer);  // doesn't really pay until we pull the data structure out of here
+                                          //SaveChangesAsync();
 
-            _sampleData.Add(dealer);  // doesn't really pay until we pull the data structure out of here
-            //SaveChangesAsync();
-
-            return CreatedAtAction(nameof(CreateDealer), new { id = dealer.Id }, dealer);
+                return CreatedAtAction(nameof(CreateDealer), new { id = dealer.Id }, dealer);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
         }
 
         //PUT: edit existing dealer
