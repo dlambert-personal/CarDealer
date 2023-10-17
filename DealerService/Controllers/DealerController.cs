@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Azure;
 using Microsoft.Identity.Web.Resource;
 using System.Net;
 using System.Text.Json;
@@ -21,6 +22,14 @@ namespace DealerService.Controllers
         {
             string json = System.IO.File.ReadAllText("./Data/sampleDealers.json");
             _sampleData = JsonSerializer.Deserialize<List<Dealer>>(json);
+            Dealer cap = new Dealer();
+            {
+                cap.Name = "Capital City Acura";
+                cap.Description = "desc";
+                cap.BrandAffiliation.Add(Brand.Acura);
+            }
+            _sampleData.Add(cap);
+            string saveme = JsonSerializer.Serialize(_sampleData);
         }
 
         // GET: DealerController
@@ -102,24 +111,8 @@ namespace DealerService.Controllers
             return Ok();
         }
 
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
 
-        // POST: DealerController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        // nested operation next?
+
     }
 }

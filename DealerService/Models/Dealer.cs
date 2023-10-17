@@ -8,6 +8,12 @@ namespace DealerService.Models
         public string? Name { get; set; }
         public string? Description { get; set; }
         public string? Website {  get; set; }
+        public List<Brand> BrandAffiliation { get; set; }
+
+        public Dealer()
+        {
+            BrandAffiliation = new List<Brand>();
+        }
     }
 
     public class DealerValidator:FluentValidation.AbstractValidator<Dealer>
