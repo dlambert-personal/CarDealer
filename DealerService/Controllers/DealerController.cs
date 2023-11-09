@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Azure;
 using Microsoft.Identity.Web.Resource;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 
 namespace DealerService.Controllers
@@ -12,7 +13,6 @@ namespace DealerService.Controllers
     //[Authorize]
     [ApiController]
     [Route("[controller]")]
-    //[Route("[controller]/[action]")]
     [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
     public class DealerController : ControllerBase
     {
@@ -24,6 +24,7 @@ namespace DealerService.Controllers
             _sampleData = JsonSerializer.Deserialize<List<Dealer>>(json);
             Dealer cap = new Dealer();
             {
+                cap.Id = 3;
                 cap.Name = "Capital City Acura";
                 cap.Description = "desc";
                 cap.BrandAffiliation.Add(Brand.Acura);
@@ -31,6 +32,17 @@ namespace DealerService.Controllers
             _sampleData.Add(cap);
             string saveme = JsonSerializer.Serialize(_sampleData);
         }
+
+
+
+        //public IActionResult<IQueryable<Customer>> Get() { /*... */}
+
+        //public IActionResult<Customer> Get(int key) { /* ... */ }
+
+        //public IActionResult<IQueryable<Order>> GetOrders(int key) {/* ... */}
+
+        //[EnableNestedPaths]
+
 
         // GET: DealerController
         [HttpGet(Name = "GeDealer")]
@@ -57,6 +69,7 @@ namespace DealerService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult CreateDealer(Dealer dealer)
         {
+            Guard.Against
             if (dealer.Id > 0) // validation failed
             {
                 return BadRequest("Do not supply ID for new entity.");
@@ -112,7 +125,7 @@ namespace DealerService.Controllers
         }
 
 
-        // nested operation next?
+
 
     }
 }

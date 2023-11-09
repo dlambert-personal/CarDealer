@@ -1,14 +1,14 @@
 [
   {
     "Id": 1,
-    "Name": "A",
-    "Description": "desc",
-    "Website": "https://a.com"
+    "Name": "ABC Used Cars",
+    "Description": "Note - no brand affiliation here!",
+    "Website": "https://abccars.com"
   },
   {
     "Id": 2,
-    "Name": "B",
-    "Description": "desc2",
-    "Website": "https://b.com"
+    "Name": "Bob's Used Cars'",
+    "Description": "Also no brand affiliation",
+    "Website": "https://bobscars.com"
   }
 ]
