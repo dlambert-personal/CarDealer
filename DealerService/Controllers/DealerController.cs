@@ -1,4 +1,5 @@
-﻿using DealerService.Models;
+﻿using Ardalis.GuardClauses;
+using DealerService.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -69,24 +70,12 @@ namespace DealerService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult CreateDealer(Dealer dealer)
         {
-            Guard.Against
-            if (dealer.Id > 0) // validation failed
-            {
-                return BadRequest("Do not supply ID for new entity.");
-            }
-            var dvalidator = new DealerValidator();
-            var result = dvalidator.Validate(dealer);
-            if (result.IsValid)
-            {
-                _sampleData.Add(dealer);  // doesn't really pay until we pull the data structure out of here
-                                          //SaveChangesAsync();
+            Guard.Against.AgainstExpression<int>(id => id <= 0, dealer.Id, "Do not supply ID for new entity.");
 
-                return CreatedAtAction(nameof(CreateDealer), new { id = dealer.Id }, dealer);
-            }
-            else
-            {
-                return BadRequest(result);
-            }
+            ModelValidationResult<Dealer, DealerValidator> res = new ModelValidationResult<Dealer, DealerValidator>(dealer);
+            res.Validate();
+            _sampleData.Add(dealer);  // SaveChangesAsync() when working with an actual data store
+            return CreatedAtAction(nameof(CreateDealer), new { id = dealer.Id }, res);
         }
 
         //PUT: edit existing dealer
